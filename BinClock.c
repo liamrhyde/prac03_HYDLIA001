@@ -26,8 +26,8 @@ int arrBTNS[] = {18,16};
 
 int HH,MM,SS;
 
-wiringPiISR(arrBTNS[0], INT_EDGE_FALLING, &minInc);
-wiringPiISR(arrBTNS[1], INT_EDGE_FALLING, &hourInc);
+wiringPiISR(18 INT_EDGE_RISING, &minInc);
+wiringPiISR(16, INT_EDGE_RISING, &hourInc);
 
 void initGPIO(void){
 	/* 
@@ -54,7 +54,7 @@ void initGPIO(void){
 	//Set up the Buttons
 	for(int j; j < sizeof(arrBTNS)/sizeof(arrBTNS[0]); j++){
 		pinMode(arrBTNS[j], INPUT);
-		pullUpDnControl(arrBTNS[j], PULLDOWN);
+		pullUpDnControl(arrBTNS[j], PUD_DOWN);
 	}
 	
 	//Attach interrupts to Buttons
