@@ -47,6 +47,7 @@ void initGPIO(void){
 	//Set Up the Seconds LED for PWM
 	//Write your logic here
     pinMode(12, PWM_OUTPUT);
+	pinMode(29, INPUT);
 	
 	printf("LEDS done\n");
 	
