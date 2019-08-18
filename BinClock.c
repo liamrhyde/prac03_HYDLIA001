@@ -82,15 +82,15 @@ int main(void){
 	for (;;){
 		//Fetch the time from the RTC
 		//Write your logic here
-		int wiringPiI2CRead(HH);                //Reads hours
-        int wiringPiI2CRead(MM);                //Reads min
-        int wiringPiI2CRead(SS);                //Reads seconds
-		
+		int time = wiringPiI2CRead(RTCAddr);                //Reads hours
+        //int wiringPiI2CRead(RTCAddr);                //Reads min
+        //int wiringPiI2CRead(RTCAddr);                //Reads seconds
+		printf(time +"\n");
         //Function calls to toggle LEDs
 		//Write your logic here
-        lightHours(HH);
-        lightMin(MM);
-        secPWM(SS);
+        //lightHours(HH);
+        //lightMin(MM);
+        //secPWM(SS);
         
         
         // Print out the time we have stored on our RTC
@@ -295,13 +295,13 @@ void hourInc(void){
 		//Fetch RTC Time
         RTC = wiringPiI2CRead(int fd);
 		//Increase hours by 1, ensuring not to overflow
-        int decTime=hexCompensation(RTC); //converts hex to dec
-        decTime++;
-        if(decTime == 24){              //you need to check what dectime outputs, i dont know the format
-            decTime = 0;
-        }
+        HH++;
+		printf("Hours =" HH);
+        //if(decTime == 24){              //you need to check what dectime outputs, i dont know the format
+        //    decTime = 0;
+        //}
 		//Write hours back to the RTC
-        decCompensation(decTime);          //converts dec back to hex
+        decCompensation(HH);          //converts dec back to hex
 	}
 	lastInterruptTime = interruptTime;
 }
@@ -313,23 +313,24 @@ void hourInc(void){
  * Software Debouncing should be used
  */
 void minInc(void){
+	
 	long interruptTime = millis();
-
+	
 	if (interruptTime - lastInterruptTime>200){
 		printf("Interrupt 2 triggered, %x\n", mins);
 		//Fetch RTC Time
         RTC = wiringPiI2CRead(int fd);
 		//Increase minutes by 1, ensuring not to overflow
-        int decTime=hexCompensation(RTC);
-        decTime++;
-        if(decTime == 60){
-            decTime= 0;//you need to increase the hours by one in this case. i cant check the output string so i dont know how to increase it
-		}
+        if (MM==60){
+			MM=0;
+			HH++;
+		}	
 		else{
-			decTime++;
+			MM++;
 		}
+		printf("min =" MM);
 		//Write minutes back to the RTC
-        decCompensation(decTime);
+        decCompensation(MM);
         
 	}
 	lastInterruptTime = interruptTime;
