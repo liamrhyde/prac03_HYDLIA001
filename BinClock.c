@@ -323,7 +323,7 @@ void minInc(void){
 	if (interruptTime - lastInterruptTime>200){
 		printf("Interrupt 2 triggered, %x\n", mins);
 		//Fetch RTC Time
-        RTC = wiringPiI2CRead(int fd);
+        RTC = wiringPiI2CRead(RTCAddr);
 		//Increase minutes by 1, ensuring not to overflow
         if (MM==60){
 			MM=0;
