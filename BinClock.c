@@ -20,6 +20,9 @@
 int hours, mins, secs;
 long lastInterruptTime = 0; //Used for button debounce
 int RTC; //Holds the RTC instance
+int LEDS = [38,37,36,35,32,31,15,13,11,7];
+int BTNS = [18,16];
+
 
 int HH,MM,SS;
 
@@ -44,14 +47,14 @@ void initGPIO(void){
 	
 	//Set Up the Seconds LED for PWM
 	//Write your logic here
-    void pinMode(38, PWM_OUTPUT)
+    pinMode(38, PWM_OUTPUT);
 	
 	printf("LEDS done\n");
 	
 	//Set up the Buttons
 	for(int j; j < sizeof(BTNS)/sizeof(BTNS[0]); j++){
 		pinMode(BTNS[j], INPUT);
-		pullUpDnControl(BTNS[j], PUD_UP);
+		pullUpDnControl(BTNS[j], PULLDOWN);
 	}
 	
 	//Attach interrupts to Buttons
@@ -85,9 +88,9 @@ int main(void){
 		
         //Function calls to toggle LEDs
 		//Write your logic here
-        lightHours();
-        lightMin();
-        secPWM();
+        lightHours(HH);
+        lightMin(MM);
+        secPWM(SS);
         
         
         // Print out the time we have stored on our RTC
@@ -119,6 +122,41 @@ int hFormat(int hours){
 void lightHours(int units){
 	// Write your logic to light up the hour LEDs here
     // i cant do this as i cant check the pins. same for the ones below.
+	int h = hexCompensation(units);
+	String leds="";
+	while (h!=0){
+		leds = h%2 + leds;
+		h = (h - h%2)/2;
+	}
+	
+	if (leds.charAt(0)=='1'){
+		digitalWrite(15, HIGH);
+	}
+	else{
+		digitalWrite(15, LOW);
+	}
+	
+	if (leds.charAt(1)=='1'){
+		digitalWrite(13, HIGH);
+	}
+	else{
+		digitalWrite(13, LOW);
+	}
+	
+	if (leds.charAt(2)=='1'){
+		digitalWrite(11, HIGH);
+	}
+	else{
+		digitalWrite(11, LOW);
+	}
+	
+	if (leds.charAt(3)=='1'){
+		digitalWrite(7, HIGH);
+	}
+	else{
+		digitalWrite(7, LOW);
+	}
+	
 }
 
 /*
@@ -126,6 +164,54 @@ void lightHours(int units){
  */
 void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
+		int h = hexCompensation(units);
+	String leds="";
+	while (h!=0){
+		leds = h%2 + leds;
+		h = (h - h%2)/2;
+	}
+	
+	if (leds.charAt(0)=='1'){
+		digitalWrite(38, HIGH);
+	}
+	else{
+		digitalWrite(38, LOW);
+	}
+	
+	if (leds.charAt(1)=='1'){
+		digitalWrite(37, HIGH);
+	}
+	else{
+		digitalWrite(37, LOW);
+	}
+	
+	if (leds.charAt(2)=='1'){
+		digitalWrite(36, HIGH);
+	}
+	else{
+		digitalWrite(36, LOW);
+	}
+	
+	if (leds.charAt(3)=='1'){
+		digitalWrite(35, HIGH);
+	}
+	else{
+		digitalWrite(35, LOW);
+	}
+	
+	if (leds.charAt(4)=='1'){
+		digitalWrite(32, HIGH);
+	}
+	else{
+		digitalWrite(32, LOW);
+	}
+	
+	if (leds.charAt(5)=='1'){
+		digitalWrite(31, HIGH);
+	}
+	else{
+		digitalWrite(31, LOW);
+	}
 }
 
 /*
@@ -135,6 +221,7 @@ void lightMins(int units){
  */
 void secPWM(int units){
 	// Write your logic here
+	pwmWrite(38, (int)(units*1024)/60);
 }
 
 /*
@@ -236,7 +323,11 @@ void minInc(void){
         int decTime=hexCompensation(RTC);
         decTime++;
         if(decTime == 60){
-            decTime=                                    //you need to increase the hours by one in this case. i cant check the output string so i dont know how to increase it
+            decTime= 0;//you need to increase the hours by one in this case. i cant check the output string so i dont know how to increase it
+		}
+		else{
+			decTime++;
+		}
 		//Write minutes back to the RTC
         decCompensation(decTime);
         
