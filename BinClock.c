@@ -20,14 +20,14 @@
 int hours, mins, secs;
 long lastInterruptTime = 0; //Used for button debounce
 int RTC; //Holds the RTC instance
-LEDS = {38,37,36,35,32,31,15,13,11,7};
-BTNS = {18,16};
+int arrLEDS[10] = {38,37,36,35,32,31,15,13,11,7};
+int arrBTNS[2] = {18,16};
 
 
 int HH,MM,SS;
 
-int wiringPiISR (BTNS[0], INT_EDGE_FALLING, void(minInc()(void));
-int wiringPiISR (BTNS[1], INT_EDGE_FALLING, void(hourInc()(void));
+int wiringPiISR(arrBTNS[0], INT_EDGE_FALLING, void(minInc()(void));
+int wiringPiISR(arrBTNS[1], INT_EDGE_FALLING, void(hourInc()(void));
 
 void initGPIO(void){
 	/* 
@@ -41,8 +41,8 @@ void initGPIO(void){
 	RTC = wiringPiI2CSetup(RTCAddr); //Set up the RTC
 	
 	//Set up the LEDS
-	for(int i; i < sizeof(LEDS)/sizeof(LEDS[0]); i++){
-	    pinMode(LEDS[i], OUTPUT);
+	for(int i; i < sizeof(arrLEDS)/sizeof(arrLEDS[0]); i++){
+	    pinMode(arrLEDS[i], OUTPUT);
 	}
 	
 	//Set Up the Seconds LED for PWM
@@ -52,9 +52,9 @@ void initGPIO(void){
 	printf("LEDS done\n");
 	
 	//Set up the Buttons
-	for(int j; j < sizeof(BTNS)/sizeof(BTNS[0]); j++){
-		pinMode(BTNS[j], INPUT);
-		pullUpDnControl(BTNS[j], PULLDOWN);
+	for(int j; j < sizeof(arrBTNS)/sizeof(arrBTNS[0]); j++){
+		pinMode(arrBTNS[j], INPUT);
+		pullUpDnControl(arrBTNS[j], PULLDOWN);
 	}
 	
 	//Attach interrupts to Buttons
