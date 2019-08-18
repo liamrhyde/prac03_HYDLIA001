@@ -20,8 +20,8 @@
 int hours, mins, secs;
 long lastInterruptTime = 0; //Used for button debounce
 int RTC; //Holds the RTC instance
-int LEDS = [38,37,36,35,32,31,15,13,11,7];
-int BTNS = [18,16];
+LEDS = {38,37,36,35,32,31,15,13,11,7};
+BTNS = {18,16};
 
 
 int HH,MM,SS;
