@@ -26,8 +26,7 @@ int arrBTNS[] = {18,16};
 
 int HH,MM,SS;
 
-wiringPiISR(18 INT_EDGE_RISING, &minInc);
-wiringPiISR(16, INT_EDGE_RISING, &hourInc);
+
 
 void initGPIO(void){
 	/* 
@@ -59,7 +58,8 @@ void initGPIO(void){
 	
 	//Attach interrupts to Buttons
 	//Write your logic here
-	
+	wiringPiISR(18, INT_EDGE_RISING, &minInc);
+	wiringPiISR(16, INT_EDGE_RISING, &hourInc);
 	printf("BTNS done\n");
 	printf("Setup done\n");
 }
@@ -166,12 +166,11 @@ void lightHours(int units){
  */
 void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
-		int h = hexCompensation(units);
-	String leds="";
+	int h = hexCompensation(units);
 	int arrMinutes[] = {0,0,0,0,0,0};
 	int counter=0;
 	while (h!=0){
-		arrHours[3-counter] = h%2;
+		arrMinutes[3-counter] = h%2;
 		h = (h - h%2)/2;
 		counter++;
 	}
@@ -301,7 +300,7 @@ void hourInc(void){
         RTC = wiringPiI2CRead(RTCAddr);
 		//Increase hours by 1, ensuring not to overflow
         HH++;
-		printf("Hours =" HH);
+		printf("Hours ="+ HH);
         //if(decTime == 24){              //you need to check what dectime outputs, i dont know the format
         //    decTime = 0;
         //}
@@ -333,7 +332,7 @@ void minInc(void){
 		else{
 			MM++;
 		}
-		printf("min =" MM);
+		printf("min ="+ MM);
 		//Write minutes back to the RTC
         decCompensation(MM);
         
