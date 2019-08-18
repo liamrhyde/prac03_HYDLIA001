@@ -26,8 +26,8 @@ int arrBTNS[2] = {18,16};
 
 int HH,MM,SS;
 
-int wiringPiISR(arrBTNS[0], INT_EDGE_FALLING, void(minInc()(void));
-int wiringPiISR(arrBTNS[1], INT_EDGE_FALLING, void(hourInc()(void));
+wiringPiISR(arrBTNS[0], INT_EDGE_FALLING, void(minInc()(void));
+wiringPiISR(arrBTNS[1], INT_EDGE_FALLING, void(hourInc()(void));
 
 void initGPIO(void){
 	/* 
