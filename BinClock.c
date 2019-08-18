@@ -7,7 +7,7 @@
  * <HYDLIA001> <MYRMOE002>
  * Date:16/08/2019
 */
-
+//test 1
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <stdio.h> //For printf functions
@@ -123,34 +123,36 @@ void lightHours(int units){
 	// Write your logic to light up the hour LEDs here
     // i cant do this as i cant check the pins. same for the ones below.
 	int h = hexCompensation(units);
-	String leds="";
+	int arrHours[] = {0,0,0,0};
+	int counter=0;
 	while (h!=0){
-		leds = h%2 + leds;
+		arrHours[3-counter] = h%2;
 		h = (h - h%2)/2;
+		counter++;
 	}
 	
-	if (leds.charAt(0)=='1'){
+	if (arrHours[0]==1){
 		digitalWrite(15, HIGH);
 	}
 	else{
 		digitalWrite(15, LOW);
 	}
 	
-	if (leds.charAt(1)=='1'){
+	if (arrHours[1]==1){
 		digitalWrite(13, HIGH);
 	}
 	else{
 		digitalWrite(13, LOW);
 	}
 	
-	if (leds.charAt(2)=='1'){
+	if (arrHours[2]==1){
 		digitalWrite(11, HIGH);
 	}
 	else{
 		digitalWrite(11, LOW);
 	}
 	
-	if (leds.charAt(3)=='1'){
+	if (arrHours[3]==1){
 		digitalWrite(7, HIGH);
 	}
 	else{
@@ -166,47 +168,50 @@ void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
 		int h = hexCompensation(units);
 	String leds="";
+	int arrMinutes[] = {0,0,0,0,0,0};
+	int counter=0;
 	while (h!=0){
-		leds = h%2 + leds;
+		arrHours[3-counter] = h%2;
 		h = (h - h%2)/2;
+		counter++;
 	}
 	
-	if (leds.charAt(0)=='1'){
+	if (arrMinutes[0]==1){
 		digitalWrite(38, HIGH);
 	}
 	else{
 		digitalWrite(38, LOW);
 	}
 	
-	if (leds.charAt(1)=='1'){
+	if (arrMinutes[0]==1){
 		digitalWrite(37, HIGH);
 	}
 	else{
 		digitalWrite(37, LOW);
 	}
 	
-	if (leds.charAt(2)=='1'){
+	if (arrMinutes[0]==1){
 		digitalWrite(36, HIGH);
 	}
 	else{
 		digitalWrite(36, LOW);
 	}
 	
-	if (leds.charAt(3)=='1'){
+	if (arrMinutes[0]==1){
 		digitalWrite(35, HIGH);
 	}
 	else{
 		digitalWrite(35, LOW);
 	}
 	
-	if (leds.charAt(4)=='1'){
+	if (arrMinutes[0]==1){
 		digitalWrite(32, HIGH);
 	}
 	else{
 		digitalWrite(32, LOW);
 	}
 	
-	if (leds.charAt(5)=='1'){
+	if (arrMinutes[0]==1){
 		digitalWrite(31, HIGH);
 	}
 	else{
@@ -293,7 +298,7 @@ void hourInc(void){
 	if (interruptTime - lastInterruptTime>200){
 		printf("Interrupt 1 triggered, %x\n", hours);
 		//Fetch RTC Time
-        RTC = wiringPiI2CRead(int fd);
+        RTC = wiringPiI2CRead(RTCAddr);
 		//Increase hours by 1, ensuring not to overflow
         HH++;
 		printf("Hours =" HH);
